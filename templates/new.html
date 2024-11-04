@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <br>
+    <form method="post">
+        <div class="layui-form-item">
+            <div class="layui-form">
+                <input type="text" name="title" placeholder="请输入标题" class="layui-input"
+                       value="{{ request.form['title'] }}"></input>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-form">
+                <textarea name="content" placeholder="请输入内容"
+                          class="layui-textarea">{{ request.form['content'] }}</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-form">
+                <textarea name="tags" placeholder="请输入标签"
+                          class="layui-textarea">{{ request.form['tags'] }}</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-form">
+                <textarea name="category" placeholder="请输入类别"
+                          class="layui-textarea">{{ request.form['category'] }}</textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button type="submit" class="layui-btn layui-btn-sm">提交</button>
+        </div>
+    </form>
+
+{% endblock %}

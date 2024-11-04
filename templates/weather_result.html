@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}天气预报 - LtinerEase{% endblock %}
+
+{% block content %}
+<div class="weather-result">
+    <h1>天气预报结果</h1>
+    {% if weather_data %}
+        <div>
+            <h2>{{ weather_data.name }}</h2>
+            <p>温度: {{ weather_data.main.temp }} °C</p>
+            <p>天气状况: {{ weather_data.weather[0].description }}</p>
+            <!-- 根据实际API响应添加更多天气信息 -->
+        </div>
+    {% else %}
+        <p>没有找到天气信息。</p>
+    {% endif %}
+</div>
+{% endblock %}

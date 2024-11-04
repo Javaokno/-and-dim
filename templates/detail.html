@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>{% block title %} {{ detail['title'] }} {% endblock %}</h2>
+
+    发布时间：<span class="badge badge-primary">{{ detail['created'] }}</span>
+
+    <p>{{ detail['content'] }}</p>
+    <p>{{ detail['tags'] }}</p>
+    <p>{{ detail['category'] }}</p>
+
+
+
+    <hr>
+    <form action="{{ url_for('delete', id=detail['id']) }}" method="POST">
+        <input type="submit" value="删除" class="layui-btn layui-btn-sm layui-btn-danger"
+               onclick="return confirm('确定要删除吗?')">
+    </form>
+
+{% endblock %}

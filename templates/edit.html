@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %} 编辑 "{{ post['title'] }}" {% endblock %}</h1>
+    <br>
+    <form id="editForm" method="post">
+        <div class="layui-form-item">
+            <div class="layui-form">
+                <input type="text" name="title" placeholder="博文标题" class="layui-input"
+                       value="{{ request.form['title'] or post['title'] }}">
+                </input>
+            </div>
+        </div>
+                <div class="layui-form-item">
+            <div class="layui-form">
+                <label>
+<textarea name="tags" placeholder="请输入tags"
+          class="layui-textarea">{{ request.form['tags'] or post['tags'] }}</textarea>
+                </label>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-form">
+                <label>
+<textarea name="category" placeholder="请输入类别"
+          class="layui-textarea">{{ request.form['category'] or post['category'] }}</textarea>
+                </label>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-form">
+                <label>
+<textarea name="content" placeholder="Post content"
+          class="layui-textarea">{{ request.form['博文内容'] or post['content'] }}</textarea>
+                </label>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button type="submit" class="layui-btn layui-btn-sm">提交</button>
+        </div>
+    </form>
+    <hr>
+{% endblock %}

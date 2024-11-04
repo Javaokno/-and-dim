@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}查看天气 - LtinerEase{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>查看天气</h1>
+    <!-- 天气搜索表单 -->
+    <form id="weatherForm">
+        <div class="form-group">
+            <label for="destination">输入目的地：</label>
+            <input type="text" class="form-control" id="destination" placeholder="输入目的地" name="city">
+        </div>
+        <button type="submit" class="btn btn-primary">查询天气</button>
+    </form>
+    <!-- 天气结果显示区域 -->
+    <div id="weatherResult" class="mt-4">
+        <!-- 天气结果将通过 AJAX 动态加载 -->
+    </div>
+</div>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/weather.css') }}">
+<!-- 引入 jQuery -->
+<script src="{{ url_for('static', filename='jquery-3.3.1.min.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('weatherForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var city = document.getElementById('destination').value; // 确保 ID 匹配
+        if (city) {
+            fetchWeather(city);
+        }
+    });
+
+    function fetchWeather(city) {
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=91d88c34e3d4d50e60ea2d02f00c65ed&units=metric`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => displayWeather(data))
+            .catch(error => {
+                console.error('Fetch error:', error);
+                document.getElementById('weatherResult').textContent = '无法获取天气数据，请稍后重试。'; // 确保 ID 匹配
+            });
+    }
+
+    function displayWeather(data) {
+        const weatherResultElement = document.getElementById('weatherResult');
+        weatherResultElement.innerHTML = `
+            <h2>天气信息 - ${data.name}</h2>
+            <p>温度: ${data.main.temp} °C</p>
+            <p>风速: ${data.wind.speed} m/s</p> <!-- 风速单位可能是 m/s 或 km/h，取决于 API -->
+            <p>风向: ${data.wind.deg}°</p> <!-- 风向通常表示风从哪个角度吹来 -->
+            <p>天气状况: ${data.weather[0].description}</p>
+        `;
+    }
+});
+</script>
+{% endblock %}

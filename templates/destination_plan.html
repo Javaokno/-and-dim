@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}目的地规划 - LtinerEase{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+            <div class="search-form-container">
+                <h1 class="text-center mb-4">目的地规划</h1>
+                <!-- 地图容器 -->
+                <div id="mapid" style="height: 400px; margin-bottom: 20px;">
+                    <img src="{{ url_for('static', filename='png.jpg') }}" alt="" width="600px">
+                </div>
+                <!-- 表单用于搜索目的地 -->
+                <form id="searchForm" class="search-form">
+                    <div class="form-group">
+                        <label for="searchInput" class="sr-only">搜索目的地：</label>
+                        <input type="text" class="form-control" id="searchInput" placeholder="输入目的地">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block mt-2">搜索</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- 引入 Leaflet 的 CSS 文件 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.css') }}">
+    <!-- 引入 Leaflet 的 JavaScript 文件 -->
+    <script src="{{ url_for('static', filename='leaflet.js') }}"></script>
+    <script>
+
+        // 确保 DOM 加载完成后初始化地图
+        document.addEventListener('DOMContentLoaded', function () {
+            // 初始化 Leaflet 地图的代码
+            let map = L.map('mapid').setView([22.5247, 113.8578], 13);
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
+
+            let marker = L.marker([22.5247, 113.8578]).addTo(map);
+            marker.bindPopup("标记。").openPopup();
+            marker.dragging.enable();
+
+            let circle = L.circle([22.5247, 113.8578], {
+                color: 'red',   // 圆的边界颜色
+                fillColor: '#f03',  // 圆的填充颜色
+                fillOpacity: 0.5,  // 圆的填充透明度
+                radius: 500  // 圆的半径，单位：米
+            }).addTo(map);
+            circle.dragging.disable();
+
+        });
+        //调用L.marker传入标注点的经纬度，再调用addTo添加到地图中
+        //L.marker(<LatLng> latlng, <Marker options>
+        L.marker([50.5, 30.5]).addTo(map);
+        //在第二个参数中可以传一个对象来定义标注点的各种信息，例如icon：{}，title等
+        // 生成自定义icon
+        /*
+        这个我根据源代码中查找到的icon的一些属性，配置这些属性值icon才会在标注点的中央上，否则不配置的话会有偏移。
+        */
+        function createCustomIcon(url) {
+            return L.icon({
+                iconUrl: url,
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                tooltipAnchor: [16, -28],
+            })
+        }
+
+        // 处理表单提交事件
+        document.getElementById('searchForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // 阻止表单默认提交行为
+            // 搜索逻辑...
+        });
+    </script>
+{% endblock %}
